@@ -2,7 +2,7 @@ const userModel =require("../models/user.model");
 const bcrypt=require("bcryptjs");
 const jwt =require("jsonwebtoken");
 const blacklistModel=require("../models/blacklist.model");
-
+const redis =require("../configs/cache")
 
 async function registeruser(req,res){
     const {username ,email ,password }= req.body;
@@ -50,12 +50,20 @@ async function registeruser(req,res){
 async function loginuser(req,res){
     const {email ,username ,password} =req.body;
 
+    if(!password){
+        return res.status(400).json({
+            message:"password is required"
+        })
+    }
+
+
+
     const user =await userModel.findOne({
         $or :[
             {email},
             {username}
         ]
-    })
+    }).select("+password")
 
     if(!user){
         return res.status(400).json({
@@ -100,15 +108,19 @@ async function getMe(req,res){
 }
 
 async function logoutuser(req,res){
-    const token=req.cookies.token
+    const token = req.cookies?.token
+
+    if(!token){
+        return res.status(400).json({
+            message:"Token not found"
+        })
+    }
+
+    await redis.set(token, Date.now().toString(),"EX",60*60)
 
     res.clearCookie("token")
 
-    await blacklistModel.create({
-        token
-    })
-
-    res.status(201).json({
+    res.status(200).json({
         message:"logout successfully"
     })
 }
