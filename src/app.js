@@ -12,8 +12,6 @@ app.use(cors({
     origin: ["http://localhost:5173", "https://backend-1-1395.onrender.com"],
     credentials:true
 }))
-
-app.use(express.static("./public"))
 /**
  * Routes
 */
