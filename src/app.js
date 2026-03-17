@@ -9,7 +9,7 @@ app.use(cookieParser())
 
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://backend-1-1395.onrender.com"],
+    origin: "http://localhost:5173",
     credentials:true
 }))
 /**
