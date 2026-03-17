@@ -43,7 +43,7 @@ async function uploadSong(req, res) {
     const song = await songModel.create({
         title,
         url: songFile.url,
-        posterurl: posterFile.url, // ⚠️ match schema name
+        posterUrl: posterFile.url, // ⚠️ match schema name
         mood
     });
 

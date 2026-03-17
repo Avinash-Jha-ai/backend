@@ -5,10 +5,11 @@ const songSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    posterUrl: {
+    posterUrl: {   // ✅ fixed
         type: String,
-        required: true,
+        required: true
     },
+
     title: {
         type: String,
         required: true
